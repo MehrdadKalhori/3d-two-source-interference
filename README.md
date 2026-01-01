@@ -102,10 +102,11 @@ This supports reproducible lab reports and homework submissions.
 
 ## Installation
 ### Option A) Using requirements.txt
+### Crafted by Mehrdad, straight out of the Wild West of Lorestan, Iran 🤠
 ```bash
 pip install -r requirements.txt
 
-Made by Mehrdad Kalhori — a kid from the “Wild West” of Lorestan 🤠
+
 
 ## License
 MIT License. See `LICENSE` for details.
