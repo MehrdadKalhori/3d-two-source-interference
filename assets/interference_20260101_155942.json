@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-01-01T15:59:42",
+  "domain": {
+    "xlim": [
+      -20.0,
+      20.0
+    ],
+    "ylim": [
+      -20.0,
+      0.0
+    ],
+    "zlim": [
+      -20.0,
+      20.0
+    ],
+    "n": 220,
+    "stride": 4
+  },
+  "params": {
+    "lambda0_um": 0.6328,
+    "dlam_um": 0.0,
+    "nlam": 1,
+    "q_um": 5.5,
+    "dphi0_rad": 1.4184073464102074,
+    "A2_over_A1": 1.0,
+    "gamma_user": 1.0,
+    "pol_theta_deg": 0.0,
+    "incoming1": true,
+    "incoming2": true,
+    "use_I_decay": false,
+    "use_E_decay": true,
+    "fraunhofer_on": false,
+    "phase": 0.0,
+    "fixed_scale_E": true,
+    "lock_I_scale": true,
+    "contrast_I": false
+  },
+  "probe": {
+    "on": true,
+    "mode": "face_y",
+    "u1": 0.0,
+    "u2": 0.0,
+    "free_xyz": [
+      0.0,
+      -10.0,
+      0.0
+    ]
+  },
+  "profile": {
+    "on": true,
+    "face": "y",
+    "zL": 0.0,
+    "yL": -10.0
+  },
+  "display": {
+    "main_view": "I",
+    "arrows_on": false,
+    "arrows_wave": "w1"
+  }
+}
