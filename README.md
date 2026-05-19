@@ -102,7 +102,7 @@ This supports reproducible lab reports and homework submissions.
 
 ## Installation
 ### Option A) Using requirements.txt
-### Crafted by Mehrdad Y.Kalhori, straight out of the Wild West of Lorestan, Iran 🤠
+### Crafted by Mehrdad Y. Kalhori, straight out of the Wild West of Lorestan, Iran 🤠
 ```bash
 pip install -r requirements.txt
 
