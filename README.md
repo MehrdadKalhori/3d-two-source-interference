@@ -1,84 +1,111 @@
-# Forward Scattering Anisotropy Factor ($g$) Calculator & 3D Visualizer
+# 3D Two-Source Interference Simulator (Teaching Edition)
 
-A professional Python-based computational suite designed for biomedical optics, photonics, and tissue characterization research. This repository provides a two-fold solution to evaluate light-tissue interactions: an automated Graphical User Interface (GUI) to calculate the optical asymmetry parameter ($g$-factor) from raw experimental data, and an interactive 3D visualizer to model scattering cone transitions across cleared and native biological media.
+An interactive, teaching-oriented simulator for visualizing "interference from two point sources" in 3D space.
+The notebook renders interference patterns on "three orthogonal faces" of a 3D domain (a “corner view”),
+and provides diagnostic tools that help students connect "geometry (r₁, r₂, Δr)" to "phase (Δφ)" and to
+what we observe as "fringes" in both "near-field" and "far-field (Fraunhofer)" regimes.
 
----
 
-## 1. Core Software Suite Features
-
-This repository now contains two primary interactive components:
-
-1. **Anisotropy Factor Calculator (`anisotropy_calculator.py`):**
-   * **Automated Excel Parsing:** Dynamically reads sheet structures and offers a user-friendly dropdown mapping system for angular domain ($	heta$) and intensity arrays ($I(	heta)$).
-   * **Dual-Direction Asymmetry Compensation:** Automatically segments and evaluates independent profiles for positive ($	heta \ge 0^\circ$) and negative ($	heta \le 0^\circ$) domains to neutralize systemic laboratory alignment errors or beam decentration offsets.
-   * **Data Cleaning & Export:** Filters out non-finite entries (`NaN`, `inf`), verifies constraints, and exports publication-ready analytical Excel summary sheets and plots.
-
-2. **3D Scattering Visualizer (`3d_scattering_visualizer.py`):**
-   * **Real-time Geometric Manipulation:** Uses `matplotlib.widgets` (Sliders, TextBoxes, RadioButtons) to dynamically adjust cone lengths, base radii, and tissue block spatial properties.
-   * **Interactive Annotation Deck:** Features an active canvas tracking engine allowing real-time dragging, font resizing, and color modifications of plot captions.
-   * **Instant Export Pipeline:** Saves clean, high-resolution visual simulations (`forward_scattering_cones.png` at 300 DPI) for presentations or papers with a single click.
 
 ---
 
-## 2. Theoretical & Mathematical Background
+## Why this simulator?
+In many optics courses, interference is first introduced on a flat screen (2D).  
+This project extends that intuition into 3D by showing how fringes emerge from the "path difference"
+between two spherical wavefronts, while giving students practical controls to explore:
 
-### 2.1. The Anisotropy Factor ($g$)
-In radiative transport theory, the directionality of photon redirection after a single collision event is characterized by the scattering phase function $p(	heta)$. The anisotropy factor ($g$) represents the expected value of the cosine of the scattering angle:
-
-$$g = \langle \cos	heta 
-angle = \int_{4\pi} p(	heta) \cos	heta \, d\omega$$
-
-### 2.2. Discrete Implementation Logic
-The software suite translates this continuous integration into a discrete, intensity-weighted average formulation to handle experimental goniometer data directly:
-
-$$g = rac{\sum_{i} I(	heta_i) \cos(	heta_i)}{\sum_{i} I(	heta_i)}$$
-
-This calculation captures the critical "scattering barrier" transition, mapping how optical clearing agents (OCAs) rearrange structural collagen fiber matrices to narrow scattering profiles from native tissue states ($g  pprox 0.78$) up to highly forward-directed regimes ($g  pprox 0.96 - 0.97$).
+- "Visibility/contrast" via amplitude ratio (A2/A1), coherence (γ), and polarization mismatch  
+- "Fringe spacing" and its dependence on geometry (q, λ, distance)  
+- "Near-field vs far-field" behavior and when Fraunhofer approximation becomes valid  
+- "Incoming vs outgoing" wave convention (converging vs diverging propagation)
 
 ---
 
-## 3. Environment Setup & Installation
+## Main visualization modes
+You can switch the main rendering between:
 
-Ensure you have a modern Python environment installed. You can install all necessary scientific computing and data visualization dependencies via `pip`:
+- "Intensity (spectral-avg)"  
+  Time-averaged observable intensity with optional spectral averaging (Δλ, Nλ) to demonstrate temporal coherence.
+- "Field snapshot E (phase-visible)"  
+  Instantaneous real-field snapshot where the "phase slider" directly changes the displayed wavefronts.
+- "Path difference Δr"  
+  Pure geometry: Δr = r₂ − r₁, the core driver of interference.
+- "Phase map Δφ mod 2π"  
+  Phase wrapped into [0, 2π) to connect phase structure to fringe formation.
 
+---
+
+## Teaching controls (physics knobs)
+- "Wavelength": λ0, spectral width Δλ, and number of samples Nλ  
+- "Source separation": q (sources at x = ±q)
+- "Initial phase offset": Δφ0  
+- "Amplitude ratio": A2/A1 (controls visibility; strongest learning effect when intensity scale is locked)  
+- "Coherence factor": γ (reduces fringe visibility)  
+- "Polarization mismatch": polarization angle (effective visibility reduction)
+- "Distance decay" toggles: optional 1/r scaling in intensity or field
+- "Fraunhofer approximation": far-field model switch to compare with exact geometry
+
+---
+
+## Probe tool (numerical diagnostics)
+A probe point (green marker) can be placed on a selected face or freely in 3D.  
+At the probe, the notebook reports:
+
+- r₁, r₂, "Δr", Δr/λ  
+- "Δφ" and "Δφ mod 2π"
+- Local "Intensity I" (spectral-averaged) and "Field E" (snapshot)
+- "Local visibility estimate" (must change with A2/A1, γ, polarization)
+
+This is designed to support step-by-step classroom reasoning:
+> “If Δr ≈ mλ → constructive (bright), if Δr ≈ (m+½)λ → destructive (dark).”
+
+---
+
+## Line profile + fringe spacing
+A real-time 1D profile is plotted on a chosen face (e.g., I(x) on the y-face).
+The simulator estimates "fringe spacing" using an FFT-based method and shows the result directly on the plot.
+
+When in far-field geometry, the notebook also provides the standard expectation:
+- "Fraunhofer fringe spacing": Δx ≈ λL/(2q)
+
+---
+
+## Incoming vs outgoing waves (converging/diverging)
+Each source can be toggled as:
+- "Outgoing (diverging)" spherical wave
+- "Incoming (converging)" spherical wave
+
+Propagation arrows can be overlaid (on the y-face) to make direction conventions visually obvious.
+This is especially useful when teaching sign conventions in phase:
+- Δφ = s₂ k r₂ − s₁ k r₁ + Δφ0  
+where s = −1 (outgoing) and s = +1 (incoming).
+
+---
+
+## Compare A/B mode (side-by-side)
+A dedicated "Compare A/B" button displays two panels side-by-side, e.g.:
+
+- "A: OUT/OUT" (both waves outgoing)
+- "B: IN/OUT" (wave 1 incoming, wave 2 outgoing)
+
+This makes the effect of incoming/outgoing conventions far more visible for students.
+
+---
+
+## Save & reproducibility
+The simulator can save:
+- "PNG" of the last rendered main 3D view
+- "JSON metadata" containing all parameters and UI settings used at the moment of saving  
+This supports reproducible lab reports and homework submissions.
+
+---
+
+## Installation
+### Option A) Using requirements.txt
 ```bash
-pip install numpy pandas matplotlib openpyxl
-```
+pip install -r requirements.txt
 
-### Dependencies Breakdown:
-* `numpy`: Advanced trigonometric array processing and numerical integration.
-* `pandas` & `openpyxl`: Automated data structuring, cleaning, and spreadsheet I/O.
-* `matplotlib`: Multi-planar 3D surface rendering, widget tracking, and scientific plotting.
+Crafted by Mehrdad Y. Kalhori, straight out of the Wild West of Lorestan, Iran 🤠
 
----
-
-## 4. How to Run
-
-### Run the Data Calculator:
-```bash
-python anisotropy_calculator.py
-```
-*Select your raw data sheet via the interactive dialog window to process and export the calculated $g_{pos}$, $g_{neg}$, and compensated $g_{avg}$ factors.*
-
-### Run the Interactive 3D Visualizer:
-```bash
-python 3d_scattering_visualizer.py
-```
-*Use the real-time sliders to simulate the scattering cone narrowing effect and adjust the layout directly on the interface.*
-
----
-
-## 📖 Related Publication
-The mathematical logic, data processing pipeline, and geometric principles underlying this toolkit were utilized and validated in our peer-reviewed research regarding soft tissue biomaterials. If you use this tool or visualization model in your work, please consider citing our paper:
-
-> **"Modulation of Optical Anisotropy in Soft Tissue Biomaterials Using Optical Clearing Agents: Implications for Structural Characterization and Biomedical Applications."** > *Progress in Biomaterials (2024)*.  
-> **Authors:** Saeed Ziaee, Mohammad Ali Ansari, Mehrdad Kalhori, Kamyab Hassani, Mohammad Hossein Naddaf, Valery V. Tuchin.  
-> **DOI:** [10.57647/pibm.2024.132412](https://doi.org/10.57647/pibm.2024.132412)
-
----
-
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-_Crafted by Mehrdad Y. Kalhori, straight out of the Wild West of Lorestan, Iran 🤠_
+## License
+MIT License. See `LICENSE` for details.
